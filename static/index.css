@@ -1,0 +1,116 @@
+.Main {
+    background-color: #101010;
+    height: 100vh;
+}
+
+.Main.animate {
+    animation: animated_shadow 3s infinite linear alternate;
+}
+
+.Main p {
+    color: white;
+    width: 50%;
+    min-width: 400px;
+    position: relative;
+    left: 50%;
+    top: 25%;
+    transform: translateX(-50%);
+    font-size: 23px;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+.Main p.visible {
+    opacity: 1;
+}
+
+.Main p b {
+    font-size: 16px;
+}
+
+.Main h1 {
+    color: white;
+    text-align: center;
+}
+
+.Main h1 span {
+    position: relative;
+    animation: letter_animation .5s ease-in-out forwards;
+}
+
+button {
+    text-transform: uppercase;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background-color: #6000b0;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+    font-weight: bolder;
+}
+
+.Main div {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.copyright {
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    transform: translateX(-50%);
+    color: white;
+}
+
+.copyright a {
+    color: inherit;
+    text-decoration: none;
+}
+
+@keyframes letter_animation {
+    from {
+        opacity: 0;
+        bottom: -15px;
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0;
+    }
+}
+
+@keyframes animated_shadow {
+    0% {
+        box-shadow: inset 0px 100px 61px -100px rgba(72, 200, 250, 1);
+    }
+    33% {
+        box-shadow: inset 0px 100px 61px -100px rgba(181, 102, 249, 1);
+    }
+    100% {
+        box-shadow: inset 0px 100px 61px -100px rgba(229, 48, 81, 1);
+    }
+}
+
+.colorFull {
+    animation: animated_text 3s infinite linear alternate;
+}
+
+@keyframes animated_text {
+    0% {
+        color: rgba(72, 200, 250, 1);
+    }
+    33% {
+        color: rgba(181, 102, 249, 1);
+    }
+    100% {
+        color: rgba(229, 48, 81, 1);
+    }
+}
+
+/*229 48 81*/
