@@ -11,6 +11,9 @@ class Case:
         self.url = None
         self.reason = []
 
+        self.html = ""
+        self.download_completed = False
+
 
 class Mobo:
     def __init__(self):
@@ -25,6 +28,9 @@ class Mobo:
         self.title = None
         self.url = None
         self.reason = []
+
+        self.html = ""
+        self.download_completed = False
 
 
 class Cpu:
@@ -41,6 +47,9 @@ class Cpu:
         self.url = None
         self.reason = []
 
+        self.html = ""
+        self.download_completed = False
+
 
 class Gpu:
     def __init__(self):
@@ -52,6 +61,9 @@ class Gpu:
         self.title = None
         self.url = None
         self.reason = []
+
+        self.html = ""
+        self.download_completed = False
 
 
 class Ram:
@@ -65,6 +77,9 @@ class Ram:
         self.url = None
         self.reason = []
 
+        self.html = ""
+        self.download_completed = False
+
 
 class Drive:
     def __init__(self):
@@ -75,6 +90,9 @@ class Drive:
         self.title = None
         self.url = None
         self.reason = []
+
+        self.html = ""
+        self.download_completed = False
 
 
 class Psu:
@@ -87,6 +105,9 @@ class Psu:
         self.url = None
         self.reason = []
 
+        self.html = ""
+        self.download_completed = False
+
 
 class CpuCooler:
     def __init__(self):
@@ -97,6 +118,9 @@ class CpuCooler:
         self.title = None
         self.url = None
         self.reason = []
+
+        self.html = ""
+        self.download_completed = False
 
 
 class FullFilled:

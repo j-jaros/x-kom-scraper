@@ -1,0 +1,154 @@
+.title span {
+    position: relative;
+    animation: letter_animation .5s ease-in-out forwards;
+}
+
+@keyframes letter_animation {
+    from {
+        opacity: 0;
+        bottom: -15px;
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0;
+    }
+}
+
+.copyright {
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    transform: translateX(-50%);
+    color: white;
+    white-space: nowrap;
+}
+
+.copyright a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.colorFull {
+    animation: animated_text 3s infinite linear alternate;
+}
+
+@keyframes animated_text {
+    0% {
+        color: rgba(72, 200, 250, 1);
+    }
+    33% {
+        color: rgba(181, 102, 249, 1);
+    }
+    100% {
+        color: rgba(229, 48, 81, 1);
+    }
+}
+
+@keyframes animated_background {
+    0% {
+        background-color: rgba(72, 200, 250, 1);
+    }
+    33% {
+        background-color: rgba(181, 102, 249, 1);
+    }
+    100% {
+        background-color: rgba(229, 48, 81, 1);
+    }
+}
+
+.height100 {
+    height: 100vh;
+}
+
+.Main {
+    background-color: #101010;
+    height: 100vh;
+}
+
+.Main .check_control {
+    width: 100%;
+    min-height: 50px;
+    height: fit-content;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.check_control label {
+    color: white;
+    border-bottom: 2px dotted #ffffff;
+    cursor: help;
+}
+
+.check_control input {
+    border: 0;
+    background-color: transparent;
+    outline: none;
+    color: white;
+    border-bottom: 2px solid white;
+    width: 30%
+}
+
+.check_control button {
+    animation: animated_background 3s infinite linear alternate;
+    color: white;
+    font-weight: bolder;
+    border: 0;
+    padding: 5px 20px;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+
+.instruction {
+    position: relative;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 60%;
+    word-wrap: break-word;
+}
+
+table {
+    width: 100%;
+}
+
+td:first-of-type {
+    width: 1%;
+    white-space: nowrap;
+}
+
+td:nth-of-type(2) {
+    width: fit-content;
+    max-width: 40%;
+}
+
+table, tr, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+td {
+    color: inherit;
+}
+
+.compatible {
+    background-color: rgba(0, 255, 0, 0.5);
+}
+
+.notcompatible {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.notinlist {
+    background-color: rgba(49, 49, 49, 0.5);
+}
+
+.unrecognized {
+    background-color: #be0064;
+}
+
+.Main * {
+    color: white;
+}

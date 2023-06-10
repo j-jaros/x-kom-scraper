@@ -15,7 +15,6 @@ async function title_animation() {
         await new Promise(r=>setTimeout(r, 70))
     }
     document.querySelector("p").classList.value = 'visible'
-    document.querySelector(".Main").classList.add('animate')
 }
 
 title_animation()

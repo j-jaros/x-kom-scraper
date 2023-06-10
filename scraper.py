@@ -1,6 +1,9 @@
 # © 2023 Julian Jaros (julianjaros.pl)
 
 import re
+import threading
+import time
+
 import requests
 from bs4 import BeautifulSoup
 from components import mobo, cpu, ram, drive, psu, case, cpu_cooler, gpu, fullFilled, unrecognized
@@ -26,6 +29,18 @@ CLASSES = [COMPONENTS_TYPE[x] for x in COMPONENTS_TYPE]
 DATA_RETRIEVE_REGEX = re.compile(f'<div class="{COMPONENTS_PARAMETERS_KEYS["data_element"]}">(.*?)</div>')
 
 local = False
+list_title = ""
+
+scrap_requests = {}
+
+
+def run_scrap_request(component, recognized):
+    cur_len = len(scrap_requests)
+    scrap_requests[cur_len] = False
+    if recognized:
+        component.html = requests.get(component.url, headers=HEADERS).text
+    scrap_requests[cur_len] = True
+    exit()
 
 
 def scraper(url):
@@ -36,7 +51,8 @@ def scraper(url):
             response = f.read()
 
     soup = BeautifulSoup(response, 'html.parser')
-
+    global list_title
+    list_title = soup.find('title').string.split(" - sprawdź listę zakupową w x-kom.pl")[0]
     # tworzymy liste wszystkich elementow na liscie i dodajemy im klasy.
     list_elements = list(map(str, soup.find_all("div", {'class': 'sc-1yjqabt-7 ibTjKM'})))
     for element in list_elements:
@@ -53,8 +69,20 @@ def scraper(url):
 
     for component in CLASSES:
         if component.title is not None:
-            response = requests.get(component.url, headers=HEADERS)
-            component_soup = BeautifulSoup(response.text, 'html.parser')
+            threading.Thread(target=run_scrap_request, args=(component, True)).start()
+
+    for _ in unrecognized:
+        threading.Thread(target=run_scrap_request, args=("", False)).start()
+
+    print(f'nie rozpoznane: {unrecognized}')
+    while not all(scrap_requests.values()):
+        print('oczekuje na zakonczenie scrapowania')
+        time.sleep(0.1)
+
+    print('zakonczono scrapowanie')
+    for component in CLASSES:
+        if component.title is not None:
+            component_soup = BeautifulSoup(component.html, 'html.parser')
             params_list = list(
                 map(str, component_soup.find_all("div", {'class': COMPONENTS_PARAMETERS_KEYS['main_element']})))
 
@@ -68,17 +96,23 @@ def scraper(url):
 
     check_compatibility()
     display_result()
+    response = {}
+    full_response = (list_title, response, unrecognized)
+    for component in CLASSES:
+        c_name = str(component.__class__.__name__).lower()
+        state = getattr(fullFilled, c_name)
 
+        if state is None:
+            response[c_name] = {'status': 0, 'name': c_name}
+        elif not state:
+            response[c_name] = {'status': 1, 'name': component.title, 'reason': component.reason}
+        elif state:
+            response[c_name] = {'status': 2, 'name': component.title}
 
-"""    print("MOBO: ", vars(mobo), "\n\n")
-    print("CPU: ", vars(cpu), "\n\n")
-    print("RAM: ", vars(ram), "\n\n")
-    print("DRIVE: ", vars(drive), "\n\n")
-    print("PSU: ", vars(psu), "\n\n")
-    print("CASE: ", vars(case), "\n\n")
-    print("CPUCOOLER: ", vars(cpu_cooler), "\n\n")
-    print("GPU: ", vars(gpu), "\n\n")
-    print("FULLFILLED: ", vars(fullFilled), "\n\n")"""
+    for unrec in unrecognized:
+        response[list(unrec)[0]] = {'status': -1, 'name': list(unrec)[0]}
+
+    return full_response
 
 
 def display_result():
@@ -213,7 +247,7 @@ def update_component_data(component, title, params):
             cpu_cooler.sockets = re.findall(DATA_RETRIEVE_REGEX, params)
 
         elif title == "TDP":
-            cpu_cooler.tdp = re.findall(DATA_RETRIEVE_REGEX, params)
+            cpu_cooler.tdp = re.findall(DATA_RETRIEVE_REGEX, params)[0].split(" ")[0]
 
         elif title == "Wysokość":
             cpu_cooler.height = re.findall(DATA_RETRIEVE_REGEX, params)[0].split(" mm")[0]
@@ -234,65 +268,67 @@ def update_component_data(component, title, params):
 
 
 def check_compatibility():
-    if mobo.format not in case.formats:
+    if all([case.title, mobo.title]) and mobo.format not in case.formats:
         fullFilled.mobo = False
         mobo.reason.append({'case': 'bad_format'})
 
-    if cpu.socket != mobo.socket:
+    if all([cpu.title, mobo.title]) and cpu.socket != mobo.socket:
         fullFilled.cpu = False
         cpu.reason.append({'mobo': 'bad_socket'})
 
-    if mobo.chipset not in cpu.supported_chipsets:
+    if all([mobo.title, cpu.title]) and mobo.chipset not in cpu.supported_chipsets:
         fullFilled.cpu = False
         cpu.reason.append({'mobo': 'bad_chipset'})
 
-    if int(gpu.length) > int(case.gpu_length):
+    if all([gpu.title, case.title]) and int(gpu.length) > int(case.gpu_length):
         fullFilled.gpu = False
         gpu.reason.append({'case': 'exceeded_length'})
 
-    if int(ram.bank_count) > int(mobo.ram_slots):
+    if all([ram.title, mobo.title]) and int(ram.bank_count) > int(mobo.ram_slots):
         fullFilled.ram = False
         ram.reason.append({'mobo': 'exceeded_bank_count'})
 
-    if int(ram.capacity) > int(mobo.max_ram_size):
+    if all([ram.title, mobo.title]) and int(ram.capacity) > int(mobo.max_ram_size):
         fullFilled.ram = False
         ram.reason.append({'mobo': 'exceeded_max_ram_size'})
 
-    if int(ram.timing) not in list(map(int, mobo.ram_timings)):
+    if all([ram.title, mobo.title]) and int(ram.timing) not in list(map(int, mobo.ram_timings)):
         fullFilled.ram = False
         ram.reason.append({'mobo': 'bad_timing'})
 
-    if int(ram.timing) not in list(map(int, cpu.ram_timings)):
+    if all([ram.title, cpu.title]) and int(ram.timing) not in list(map(int, cpu.ram_timings)):
         fullFilled.ram = False
         ram.reason.append({'cpu': 'bad_timing'})
 
-    if ram.type != mobo.type_of_ram:
+    if all([ram.title, mobo.title]) and ram.type != mobo.type_of_ram:
         fullFilled.ram = False
         ram.reason.append({'mobo': 'bad_type'})
 
-    if ram.type not in cpu.types_of_ram:
+    if all([ram.title, cpu.title]) and ram.type not in cpu.types_of_ram:
         fullFilled.ram = False
         ram.reason.append({'cpu': 'bad_type'})
 
-    if int(psu.power) < int(gpu.power_consumption + cpu.power_consumption):
+    if all([psu.title, gpu.title, cpu.title]) and int(psu.power) < int(gpu.power_consumption + cpu.power_consumption):
         fullFilled.psu = False
         psu.reason.append({'power': 'not_enough_power'})
 
-    if psu.format != case.psu_format:
+    if all([psu.title, case.title]) and psu.format != case.psu_format:
         fullFilled.psu = False
         psu.reason.append({'case': 'bad_format'})
 
-    if mobo.socket not in cpu_cooler.sockets:
+    if all([mobo.title, cpu_cooler.title]) and mobo.socket not in cpu_cooler.sockets:
         fullFilled.cpucooler = False
         cpu_cooler.reason.append({'mobo': 'bad_socket'})
 
-    if int(cpu_cooler.tdp) > int(cpu.power_consumption):
+    print(f'COOLER TDP: {cpu_cooler.tdp} CPU POWER CONSUMPTION: {cpu.power_consumption}')
+    if all([cpu_cooler.title, cpu.title]) and int(cpu_cooler.tdp) > int(cpu.power_consumption):
         fullFilled.cpucooler = False
         cpu_cooler.reason.append({'cpu': 'not_enough_tdp'})
 
-    if int(cpu_cooler.height) > int(case.cpu_cooler_height):
+    if all([cpu_cooler.title, case.title]) and int(cpu_cooler.height) > int(case.cpu_cooler_height):
         fullFilled.cpucooler = False
         cpu.reason.append({'case': 'exceeded_height'})
 
 
-scraper('https://www.x-kom.pl/lista/dxuvrm6en')
+if __name__ == "__main__":
+    scraper('https://www.x-kom.pl/lista/c82stanxz')
