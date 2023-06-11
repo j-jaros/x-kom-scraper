@@ -144,4 +144,3 @@ case = Case()
 cpu_cooler = CpuCooler()
 gpu = Gpu()
 fullFilled = FullFilled()
-unrecognized = []
