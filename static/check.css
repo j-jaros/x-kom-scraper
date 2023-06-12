@@ -29,8 +29,25 @@
     text-decoration: none;
 }
 
+div.colorFull {
+    border-collapse: collapse;
+    animation: animated_border 3s infinite linear alternate;
+}
+
 .colorFull {
     animation: animated_text 3s infinite linear alternate;
+}
+
+@keyframes animated_border {
+    0% {
+        border-color: rgba(72, 200, 250, 1);
+    }
+    33% {
+        border-color: rgba(181, 102, 249, 1);
+    }
+    100% {
+        border-color: rgba(229, 48, 81, 1);
+    }
 }
 
 @keyframes animated_text {
@@ -64,6 +81,8 @@
 .Main {
     background-color: #101010;
     height: 100vh;
+    border-left: 1px solid;
+    border-right: 1px solid;
 }
 
 .Main .check_control {
@@ -109,27 +128,27 @@
     word-wrap: break-word;
 }
 
-table {
+.main_component_display {
     width: 100%;
 }
 
-td:first-of-type {
+.main_component_display td:first-of-type {
     width: 1%;
     white-space: nowrap;
 }
 
-td:nth-of-type(2) {
+.main_component_display td:nth-of-type(2) {
     width: fit-content;
     max-width: 40%;
 }
 
-table, tr, th, td {
+.main_component_display, .main_component_display tr, .main_component_display th, .main_component_display td {
     border: 1px solid white;
     border-collapse: collapse;
     padding: 5px;
 }
 
-td {
+.main_component_display td {
     color: inherit;
 }
 
@@ -151,4 +170,75 @@ td {
 
 .Main * {
     color: white;
+}
+
+.height30 {
+    height: 30vh;
+}
+
+.height70 {
+    height: 70vh;
+}
+
+.data_section {
+    background-color: #101010;
+}
+
+.comments_wrapper {
+    border: 0;
+    border-top: 1px solid;
+    padding-bottom: 20px;
+    display: flex;
+    flex-flow: column;
+    color: white;
+    animation: animated_border 3s infinite linear alternate;
+}
+
+#bad_component_container {
+    flex: 1;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+#bad_component_container::-webkit-scrollbar {
+    width: 5px;
+}
+
+#bad_component_container::-webkit-scrollbar-thumb {
+    background-color: #6000b0;
+    border-radius: 10px;
+}
+
+#bad_component_container div {
+    width: 100%;
+    height: fit-content;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#bad_component_container div p {
+    opacity: 0.7;
+}
+
+#bad_component_container div h5 {
+    margin: 0;
+}
+
+#bad_component_container div.not-compatible {
+    background-color: rgba(255, 0, 0, 0.7);
+}
+
+#bad_component_container div.no-component {
+    background-color: rgba(54, 54, 54, 0.7);
+}
+
+#bad_component_container span {
+    font-weight: bolder;
+    color: white;
+    font-size: 13px;
+}
+
+.test_percent_wrapper {
+    border-right: 1px solid;
 }

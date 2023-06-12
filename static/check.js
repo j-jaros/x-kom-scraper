@@ -104,3 +104,27 @@ function translate_names(name) {
 document.querySelector("button").addEventListener('click', () => {
     check_components()
 })
+
+const comment_container = document.querySelector("#bad_component_container")
+
+function add_comment(component, name, subtitle_content, content_params = [], type) {
+    const container = document.createElement('div')
+    const title = document.createElement('h5')
+    const subtitle = document.createElement('span')
+    const content_wrapper = document.createElement('p')
+
+    container.appendChild(title)
+    container.appendChild(subtitle)
+    container.appendChild(content_wrapper)
+    title.textContent = name
+    subtitle.textContent = subtitle_content
+    switch (type) {
+        case 0:
+            content_wrapper.textContent = "Aby w pełni sprawdzić kompatybilność podzespołów, dodaj ten komponent do listy."
+            subtitle.textContent = "Brak komponentu."
+            container.classList.value = "no-component"
+            break
+        case 1:
+
+    }
+}

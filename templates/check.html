@@ -18,15 +18,16 @@
     <div class="row">
         <div class="col-lg-2 height100" style="background-color: black">
             <h4 class="colorFull title">X-KOM SCRAPER</h4>
+            <span>©<a href="https://julianjaros.pl">Julian Jaros</a>2023</span>
         </div>
-        <div class="col-lg-6 Main">
+        <div class="col-lg-6 Main colorFull">
             <div class="check_control">
                 <label for="url_input">Link do listy: </label>
                 <input id="url_input" placeholder="Tu wklej link">
                 <button>sprawdź podzespoły</button>
             </div>
             <p>Nazwa listy: <span id="list_title">Nie załadowano</span></p>
-            <table>
+            <table class="main_component_display">
                 <thead>
                 <tr>
                     <th>Komponent</th>
@@ -34,14 +35,59 @@
                     <th>Status</th>
                 </tr>
                 </thead>
-                <tbody>
-
-                </tbody>
+                <tbody></tbody>
             </table>
             <p class="instruction">Wprowadź link do listy, następnie kliknij przycisk "Sprawdź podzespoły" i poczekaj na
                 wynik!</p>
         </div>
-        <div class="col-lg-4 height100" style="background-color: #1c73e7"></div>
+        <div class="col-lg-4 height100 data_section">
+            <div class="row">
+                <div class="col-lg-6 height30 test_percent_wrapper colorFull">
+                    <h5>Wynik testu</h5>
+                    <span>70%</span>
+                </div>
+                <div class="col-lg-6 height30"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 height70 comments_wrapper">
+                    <h4>Uwagi do komponentów</h4>
+                    <div id="bad_component_container">
+                        <div class="not-compatible">
+                            <h5>Płyta główna</h5>
+                            <span>Format jest nieprawidłowy</span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid architecto at,
+                                autem debitis deleniti eum fuga hic ipsa ipsam iure laboriosam molestias,
+                                necessitatibus, odit perferendis quis quisquam quos vel.</p>
+                        </div> <div class="no-component">
+                            <span>Płyta główna</span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid architecto at,
+                                autem debitis deleniti eum fuga hic ipsa ipsam iure laboriosam molestias,
+                                necessitatibus, odit perferendis quis quisquam quos vel.</p>
+                        </div> <div class="not-compatible">
+                            <span>Płyta główna</span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid architecto at,
+                                autem debitis deleniti eum fuga hic ipsa ipsam iure laboriosam molestias,
+                                necessitatibus, odit perferendis quis quisquam quos vel.</p>
+                        </div> <div class="not-compatible">
+                            <span>Płyta główna</span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid architecto at,
+                                autem debitis deleniti eum fuga hic ipsa ipsam iure laboriosam molestias,
+                                necessitatibus, odit perferendis quis quisquam quos vel.</p>
+                        </div> <div class="not-compatible">
+                            <span>Płyta główna</span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid architecto at,
+                                autem debitis deleniti eum fuga hic ipsa ipsam iure laboriosam molestias,
+                                necessitatibus, odit perferendis quis quisquam quos vel.</p>
+                        </div> <div class="not-compatible">
+                            <span>Płyta główna</span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid architecto at,
+                                autem debitis deleniti eum fuga hic ipsa ipsam iure laboriosam molestias,
+                                necessitatibus, odit perferendis quis quisquam quos vel.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
